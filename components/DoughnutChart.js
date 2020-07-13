@@ -1,13 +1,44 @@
 import React, { useRef, useEffect } from "react";
 import { Chart } from "chart.js";
+import { makeStyles } from "@material-ui/core/styles";
 
-export default function DoughnutChart({ item }) {
-  const { confirmed, recovered } = item;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "relative",
+  },
+  percentage: {
+    position: "absolute",
+    top: "55%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  number: {
+    display: "block",
+    fontSize: "2rem",
+    fontWeight: 700,
+  },
+  text: {
+    fontSize: ".8rem",
+    fontWeight: 600,
+  },
+}));
 
+export default function DoughnutChart({ confirmed, recovered, deceased }) {
   const chartRef = useRef();
   let doughnutChart;
 
-  const percent = ((recovered / confirmed) * 100).toFixed(2);
+  const classes = useStyles();
+
+  let percent = ((recovered / confirmed) * 100).toFixed(2);
+
+  if (deceased) {
+    percent = ((deceased / confirmed) * 100).toFixed(2);
+  }
 
   useEffect(() => {
     doughnutChart = new Chart(chartRef.current, {
@@ -17,8 +48,13 @@ export default function DoughnutChart({ item }) {
         legend: { display: false },
         title: {
           display: true,
-          text: "Confirmed / Recovered ",
+          text: deceased ? "Confirmed / Deceased" : "Confirmed / Recovered ",
           fontSize: 16,
+        },
+        layout: {
+          padding: {
+            bottom: 20,
+          },
         },
       },
     });
@@ -27,46 +63,23 @@ export default function DoughnutChart({ item }) {
   const data = {
     datasets: [
       {
-        data: [confirmed, recovered],
-        backgroundColor: ["red", "green"],
+        data: [confirmed, deceased ? deceased : recovered],
+        backgroundColor: ["#00acc1", deceased ? "#f44336" : "#4caf50"],
       },
     ],
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: ["confirmed", "recovered"],
+    labels: ["confirmed", deceased ? "deceased" : "recovered"],
   };
   return (
-    <div className="canvas-container">
-      <div className="percantage">
-        <span className="number">{percent + "%"}</span>
-        <span className="text">recovered</span>
+    <div className={classes.root}>
+      <div className={classes.percentage}>
+        <span className={classes.number}>{percent + "%"}</span>
+        <span className={classes.text}>
+          {deceased ? "Deceased" : "Recovered"}
+        </span>
       </div>
       <canvas ref={chartRef}></canvas>
-
-      <style jsx>{`
-        .canvas-container {
-          position: relative;
-        }
-        .percantage {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          z-index: 100;
-        }
-        .number {
-          display: block;
-          font-size: 2rem;
-        }
-        .text {
-          display: block;
-          font-size: 0.8rem;
-        }
-      `}</style>
     </div>
   );
 }

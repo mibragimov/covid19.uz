@@ -1,11 +1,35 @@
 import React from "react";
-import { Table, Accordion, Button, Card } from "react-bootstrap";
+import {
+  Table,
+  Accordion,
+  Button,
+  Col,
+  Row,
+  useAccordionToggle,
+  AccordionToggle,
+  Container,
+} from "react-bootstrap";
 import DoughnutChart from "./DoughnutChart";
 import { numberWithCommas } from "../utils/numberWithCommas";
 
 export default function TableComponent({ list = [] }) {
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionToggle(eventKey, () =>
+      console.log("totally custom!")
+    );
+
+    return (
+      <button
+        type="button"
+        style={{ backgroundColor: "pink" }}
+        onClick={decoratedOnClick}
+      >
+        {children}
+      </button>
+    );
+  }
   return (
-    <Table striped bordered hover size="sm" variant="dark" responsive>
+    <Table striped bordered hover size="sm" variant="dark" responsive="sm">
       <thead>
         <tr>
           <th>Name</th>
@@ -20,15 +44,14 @@ export default function TableComponent({ list = [] }) {
       <tbody>
         {list.map((item, idx) => {
           return (
-            <Accordion defaultActiveKey={idx} key={idx} as="tr">
+            <tr key={idx}>
               <td>
                 <img
                   src={`https://www.countryflags.io/${item.country_code}/flat/32.png`}
                   alt={item.country_code}
                 />
-                <Accordion.Toggle as={Button} eventKey={idx}>
-                  {item.state ? item.state : item.country}
-                </Accordion.Toggle>
+
+                {item.state ? item.state : item.country}
               </td>
               <td>
                 {numberWithCommas(item.confirmed)}{" "}
@@ -50,19 +73,32 @@ export default function TableComponent({ list = [] }) {
               </td>
               <td>{numberWithCommas(item.tests)}</td>
               <td>{numberWithCommas(item.recovered)}</td>
-
-              <td>
-                <Accordion.Collapse eventKey={idx}>
-                  <>
-                    <DoughnutChart item={item} />
-                    <DoughnutChart item={item} />
-                  </>
-                </Accordion.Collapse>
-              </td>
-            </Accordion>
+            </tr>
           );
         })}
       </tbody>
     </Table>
   );
+}
+
+{
+  /* <Accordion defaultActiveKey={idx} key={idx} as="tr">
+                  <td>
+                    <AccordionToggle eventKey={idx}>info</AccordionToggle>
+                  </td>
+                  <td colSpan="10">
+                    <Accordion.Collapse eventKey={idx}>
+                     
+                        <Row>
+                          <Col xs="12">
+                            <DoughnutChart item={item} />
+                          </Col>
+                          <Col xs="12">
+                            <DoughnutChart item={item} />
+                          </Col>
+                        </Row>
+                     
+                    </Accordion.Collapse>
+                  </td>
+                </Accordion> */
 }

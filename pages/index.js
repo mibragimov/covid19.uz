@@ -1,13 +1,31 @@
 import Head from "next/head";
 import Axios from "axios";
-import { Container, Row, Col } from "react-bootstrap";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { ButtonGroup, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
 import React, { useState } from "react";
-import Navigation from "../components/Navbar";
-import TableComponent from "../components/Table";
+import Header from "../components/Header";
+
 import CardComponent from "../components/Card";
+import TableCollapse from "../components/TableCollapse";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    marginTop: 5,
+  },
+}));
 
 export default function Home({ totals, regions }) {
   const [arr, setArr] = useState(regions.world.list);
+
+  const classes = useStyles();
 
   const asia = mergeLists(regions.asia.list, regions.world.list);
   const europe = mergeLists(regions.europe.list, regions.world.list);
@@ -32,62 +50,71 @@ export default function Home({ totals, regions }) {
     }
     return arr;
   }
-  console.log(regions);
+
   return (
-    <Container fluid>
+    <div className={classes.root}>
       <Head>
         <title>Covid19 tracker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navigation />
-      <Container fluid>
-        <Row>
-          <Col lg="3">
+      <Header />
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={3}>
+          <Paper className={classes.paper}>
             <CardComponent item={uzbekistan} />
             <CardComponent item={totals} />
-          </Col>
-          <Col>
-            <div>
-              <button onClick={() => setArr(europe)}>Europe</button>
-              <button onClick={() => setArr(africa)}>Africa</button>
-              <button onClick={() => setArr(asia)}>Asia</button>
-              <button onClick={() => setArr(southamerica)}>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={9}>
+          <Paper className={classes.paper}>
+            <ButtonGroup
+              variant="text"
+              color="primary"
+              aria-label="text primary button group"
+            >
+              <Button onClick={() => setArr(regions.world.list)}>World</Button>
+              <Button onClick={() => setArr(europe)}>Europe</Button>
+              <Button onClick={() => setArr(africa)}>Africa</Button>
+              <Button onClick={() => setArr(asia)}>Asia</Button>
+              <Button onClick={() => setArr(southamerica)}>
                 South America
-              </button>
-              <button onClick={() => setArr(oceania)}>Oceania</button>
-              <button onClick={() => setArr(regions.china.list)}>China</button>
-              <button onClick={() => setArr(regions.russia.list)}>
-                Russia
-              </button>
-              <button onClick={() => setArr(regions.canada.list)}>
-                Canada
-              </button>
-              <button onClick={() => setArr(regions.unitedstates.list)}>
+              </Button>
+              <Button onClick={() => setArr(oceania)}>Oceania</Button>
+
+              <Button onClick={() => setArr(regions.unitedstates.list)}>
                 USA
-              </button>
-              <button onClick={() => setArr(regions.italy.list)}>Italy</button>
-              <button onClick={() => setArr(regions.australia.list)}>
+              </Button>
+              <Button onClick={() => setArr(regions.canada.list)}>
+                Canada
+              </Button>
+              <Button onClick={() => setArr(regions.china.list)}>China</Button>
+              <Button onClick={() => setArr(regions.australia.list)}>
                 Australia
-              </button>
-            </div>
-            <TableComponent list={arr} />
-          </Col>
-        </Row>
-      </Container>
-    </Container>
+              </Button>
+              <Button onClick={() => setArr(regions.italy.list)}>Italy</Button>
+              <Button onClick={() => setArr(regions.russia.list)}>
+                Russia
+              </Button>
+            </ButtonGroup>
+          </Paper>
+          <Paper className={classes.paper}>
+            <TableCollapse data={arr} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 
 export async function getServerSideProps(context) {
-  // const res = await Axios.get("https://cov19.cc/report.json");
-
-  const [res1] = await Promise.all([Axios.get("https://cov19.cc/report.json")]);
+  const { data } = await Axios.get("https://cov19.cc/report.json");
 
   return {
     props: {
-      totals: res1.data.regions.world.totals,
-      regions: res1.data.regions,
-      updated: res1.data.last_updated,
+      totals: data.regions.world.totals,
+      regions: data.regions,
+      updated: data.last_updated,
     },
   };
 }
