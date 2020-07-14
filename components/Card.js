@@ -1,65 +1,120 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import { Box } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import { WatchLater } from "@material-ui/icons";
 import moment from "moment";
+import classNames from "classnames";
 import { numberWithCommas } from "../utils/numberWithCommas";
+import StyledBadge from "./StyledBadge";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
-    minHeight: 400,
-    marginBottom: 10,
+    minHeight: 469,
+    marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.primary.light,
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
-  title: {
-    fontSize: 14,
-  },
   pos: {
     marginBottom: 12,
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontWeight: 700,
+  },
+  h3: {
+    fontWeight: 700,
+  },
+  span: {
+    display: "block",
+    fontSize: "1.3rem",
+    fontWeight: 500,
+    color: theme.palette.primary.contrastText,
+    lineHeight: 1.6,
+  },
+  confirmed: {
+    color: theme.palette.info.main,
+  },
+  recovered: {
+    color: theme.palette.success.main,
+  },
+  active: {
+    color: theme.palette.warning.main,
+  },
+  critical: {
+    color: theme.palette.secondary.main,
+  },
+  deaths: {
+    color: theme.palette.error.main,
   },
 }));
 
 export default function CardComponent({ item }) {
   const classes = useStyles();
-  const theme = useTheme();
 
   return (
-    <Card className={classes.root} color={theme.palette.success}>
+    <Card className={classes.root} raised>
       <CardContent>
+        <Box className={classes.box}>
+          <Typography variant="h4" className={classes.title}>
+            Totals
+          </Typography>
+          <StyledBadge />
+        </Box>
+        <Typography variant="caption" gutterBottom>
+          Specific country data may be delayed
+        </Typography>
         <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
+          variant="h4"
+          className={classNames(classes.h3, classes.confirmed)}
         >
-          Uzbekistan Covid19 stats
+          {numberWithCommas(item.confirmed)}
+          <span className={classes.span}>Confirmed Cases</span>
         </Typography>
-        <Typography variant="h5" component="h2">
-          Confirmed Cases: {numberWithCommas(item.confirmed)}{" "}
-          {item.daily_confirmed && item.daily_confirmed !== -1
-            ? `+${item.daily_confirmed}`
-            : ""}
+        <Typography
+          variant="h4"
+          className={classNames(classes.h3, classes.recovered)}
+        >
+          {numberWithCommas(item.recovered)}
+          <span className={classes.span}>Recovered</span>
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          Recovered: {numberWithCommas(item.recovered)}
-          <br />
-          Active:{" "}
+        <Typography
+          variant="h4"
+          className={classNames(classes.h3, classes.active)}
+        >
           {numberWithCommas(item.confirmed - item.recovered - item.deaths)}
-          <br />
-          Critical: {numberWithCommas(item.critical)}
-          <br />
+          <span className={classes.span}>Active</span>
         </Typography>
-        <Typography variant="body2" component="p">
-          Death: {numberWithCommas(item.deaths)}{" "}
-          {item.daily_deaths && item.daily_deaths !== -1
-            ? `+${item.daily_deaths}`
-            : ""}
+        <Typography
+          variant="h4"
+          className={classNames(classes.h3, classes.critical)}
+        >
+          {numberWithCommas(item.critical)}
+          <span className={classes.span}>Critical</span>
         </Typography>
-        Last updated: {moment(item.last_updated).fromNow()}
+        <Typography
+          variant="h4"
+          className={classNames(classes.h3, classes.deaths)}
+        >
+          {numberWithCommas(item.deaths)}
+          <span className={classes.span}>Deaths</span>
+        </Typography>
+
+        <Typography variant="caption">
+          Last updated: {moment(item.last_updated).fromNow()}
+        </Typography>
       </CardContent>
     </Card>
   );

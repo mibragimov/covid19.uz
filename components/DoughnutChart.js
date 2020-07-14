@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
+    backgroundColor: theme.palette.primary.main,
   },
   percentage: {
     position: "absolute",

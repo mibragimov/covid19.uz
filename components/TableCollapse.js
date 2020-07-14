@@ -18,8 +18,9 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import DoughnutChart from "./DoughnutChart";
 import { Avatar, Badge } from "@material-ui/core";
 import { numberWithCommas } from "../utils/numberWithCommas";
+import theme from "../src/theme";
 
-const useRowStyles = makeStyles({
+const useRowStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       borderBottom: "unset",
@@ -37,7 +38,7 @@ const useRowStyles = makeStyles({
   img: {
     marginRight: 5,
   },
-});
+}));
 
 function Row(props) {
   const { row } = props;
@@ -124,9 +125,16 @@ function Row(props) {
   );
 }
 
+const useTableStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
+
 export default function CollapsibleTable({ data }) {
+  const classes = useTableStyles();
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.root}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
