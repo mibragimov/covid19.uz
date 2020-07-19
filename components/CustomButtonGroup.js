@@ -6,19 +6,28 @@ const useButtonGroupStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 500,
   },
+  btn: {
+    color: theme.palette.error.main,
+  },
 }));
 
-export default function CustomButtonGroup({ handleClick, list }) {
+export default function CustomButtonGroup({ setRows, list }) {
+  const [active, setActive] = React.useState(0);
   const classes = useButtonGroupStyles();
+
+  const handleClick = (item, id) => {
+    setRows(item);
+    setActive(id);
+  };
   return (
-    <ButtonGroup
-      variant="text"
-      color="warning"
-      aria-label="text secondary button group"
-    >
-      {list.map((item) => {
+    <ButtonGroup variant="text" aria-label="text primary button group">
+      {list.map((item, idx) => {
         return (
-          <Button onClick={() => handleClick(item.country)} key={item.name}>
+          <Button
+            onClick={() => handleClick(item.country, idx)}
+            key={item.name}
+            className={active === idx ? classes.btn : {}}
+          >
             <Typography variant="subtitle1" className={classes.text}>
               {item.name}
             </Typography>

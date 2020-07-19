@@ -5,11 +5,12 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Box } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { WatchLater } from "@material-ui/icons";
 import moment from "moment";
 import classNames from "classnames";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import StyledBadge from "./StyledBadge";
+import { FaBullhorn, FaLink, FaFacebookF, FaTwitter } from "react-icons/fa";
+import Icon from "./Icon";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.contrastText,
     lineHeight: 1.6,
   },
+  textBox: {
+    display: "flex",
+    alignItems: "center",
+  },
+  bullhorn: {
+    fontSize: "1rem",
+    marginRight: theme.spacing(0.5),
+  },
   confirmed: {
     color: theme.palette.info.main,
   },
@@ -61,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CardComponent({ item }) {
+export default function CardComponent({ item, title }) {
   const classes = useStyles();
 
   return (
@@ -69,13 +78,18 @@ export default function CardComponent({ item }) {
       <CardContent>
         <Box className={classes.box}>
           <Typography variant="h4" className={classes.title}>
-            Totals
+            {title}
           </Typography>
           <StyledBadge />
         </Box>
-        <Typography variant="caption" gutterBottom>
-          Specific country data may be delayed
-        </Typography>
+
+        <Box marginBottom={2} className={classes.textBox}>
+          <FaBullhorn className={classes.bullhorn} />
+          <Typography variant="caption">
+            specific country data may be delayed
+          </Typography>
+        </Box>
+
         <Typography
           variant="h4"
           className={classNames(classes.h3, classes.confirmed)}
@@ -111,6 +125,20 @@ export default function CardComponent({ item }) {
           {numberWithCommas(item.deaths)}
           <span className={classes.span}>Deaths</span>
         </Typography>
+
+        <Box marginBottom={2} marginTop={2}>
+          <Icon title="Copy Link" icon="link">
+            <FaLink />
+          </Icon>
+
+          <Icon title="Share to Facebook" icon="facebook">
+            <FaFacebookF />
+          </Icon>
+
+          <Icon title="Share to Twitter" icon="twitter">
+            <FaTwitter />
+          </Icon>
+        </Box>
 
         <Typography variant="caption">
           Last updated: {moment(item.last_updated).fromNow()}

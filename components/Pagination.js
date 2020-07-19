@@ -25,7 +25,7 @@ export default function Pagination({
       onChangePage={handleChangePage}
       rowsPerPage={rowsPerPage}
       onChangeRowsPerPage={handleChangeRowsPerPage}
-      rowsPerPageOptions={[10, 20, { value: -1, label: "All" }]}
+      rowsPerPageOptions={[10, 15, 20, { value: -1, label: "All" }]}
     />
   );
 }

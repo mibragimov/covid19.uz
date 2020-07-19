@@ -1,7 +1,7 @@
 import React from "react";
 import Badge from "@material-ui/core/Badge";
-import Button from "@material-ui/core/Button";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Box } from "@material-ui/core";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -16,7 +16,7 @@ const StyledBadge = withStyles((theme) => ({
       height: "100%",
       borderRadius: "50%",
       animation: "$ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
+      border: "3px solid currentColor",
       content: '""',
     },
   },
@@ -39,8 +39,16 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-  btn: {
-    color: theme.palette.error.main,
+  box: {
+    backgroundColor: theme.palette.error.main,
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    borderRadius: "6px",
+    fontSize: ".7rem",
+    textTransform: "Uppercase",
+    fontWeight: 700,
   },
 }));
 
@@ -57,9 +65,9 @@ export default function BadgeAvatars() {
         }}
         variant="dot"
       >
-        <Button size="small" className={classes.btn}>
+        <Box component="span" className={classes.box}>
           live
-        </Button>
+        </Box>
       </StyledBadge>
     </div>
   );

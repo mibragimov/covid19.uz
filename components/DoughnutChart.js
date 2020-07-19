@@ -1,11 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import { Chart } from "chart.js";
 import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.A700,
+    minWidth: 300,
+    margin: "auto",
+    paddingBottom: theme.spacing(2),
   },
   percentage: {
     position: "absolute",
@@ -20,12 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
   number: {
     display: "block",
-    fontSize: "2rem",
+    fontSize: "2.5rem",
     fontWeight: 700,
   },
   text: {
-    fontSize: ".8rem",
-    fontWeight: 600,
+    fontSize: ".9rem",
+    fontWeight: 500,
+    display: "block",
   },
 }));
 
@@ -45,19 +50,7 @@ export default function DoughnutChart({ confirmed, recovered, deceased }) {
     doughnutChart = new Chart(chartRef.current, {
       type: "doughnut",
       data: data,
-      options: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: deceased ? "Confirmed / Deceased" : "Confirmed / Recovered ",
-          fontSize: 16,
-        },
-        layout: {
-          padding: {
-            bottom: 20,
-          },
-        },
-      },
+      options: options,
     });
   }, []);
 
@@ -72,15 +65,32 @@ export default function DoughnutChart({ confirmed, recovered, deceased }) {
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: ["confirmed", deceased ? "deceased" : "recovered"],
   };
+
+  const options = {
+    legend: { display: false },
+    title: {
+      display: true,
+      text: deceased ? "Confirmed / Deceased" : "Confirmed / Recovered ",
+      fontSize: 20,
+      fontColor: "#d8dce6",
+    },
+
+    elements: {
+      arc: {
+        borderWidth: 0,
+        hoverBorderColor: 0,
+      },
+    },
+  };
   return (
-    <div className={classes.root}>
-      <div className={classes.percentage}>
-        <span className={classes.number}>{percent + "%"}</span>
+    <Paper className={classes.root} elevation={2}>
+      <Box className={classes.percentage}>
+        <span className={classes.number}>{Math.abs(percent) + "%"}</span>
         <span className={classes.text}>
           {deceased ? "Deceased" : "Recovered"}
         </span>
-      </div>
+      </Box>
       <canvas ref={chartRef}></canvas>
-    </div>
+    </Paper>
   );
 }

@@ -12,6 +12,15 @@ import CardComponent from "../components/Card";
 import TableCollapse from "../components/TableCollapse";
 import Pagination from "../components/Pagination";
 import CustomButtonGroup from "../components/CustomButtonGroup";
+import {
+  FaGlobeAfrica,
+  FaGlobeEurope,
+  FaGlobeAmericas,
+  FaGlobeAsia,
+  FaLanguage,
+} from "react-icons/fa";
+import Flag from "../components/Flag";
+import HeaderLinks from "../components/HeaderLinks";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +45,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home({ totals, regions }) {
   const [rows, setRows] = useState(regions.world.list);
+  const [watchList, setWatchList] = useState([]);
+  const [hideWatchlist, setHideWatchlist] = useState(true);
+
+  const handleAddWatchListItem = (row) => {
+    setWatchList((prevState) => [...prevState, row]);
+    localStorage.setItem("list", JSON.stringify(watchList));
+    if (!watchList.length) {
+      setHideWatchlist(false);
+    }
+  };
+
+  const handleRemoveWatchListItem = (row) => {
+    const filteredArr = watchList.filter(
+      (item) => item.country !== row.country
+    );
+    if (!filteredArr.length) {
+      setHideWatchlist(true);
+    }
+    setWatchList(filteredArr);
+    localStorage.setItem("list", JSON.stringify(filteredArr));
+  };
+
+  React.useEffect(() => {
+    const list = localStorage.getItem("list");
+
+    if (list) {
+      setWatchList(JSON.parse(list));
+      setHideWatchlist(false);
+    }
+  }, []);
 
   // Pagination
   const [page, setPage] = useState(0);
@@ -63,46 +102,57 @@ export default function Home({ totals, regions }) {
     {
       name: "World",
       country: regions.world.list,
+      icon: <FaLanguage />,
     },
     {
       name: "Asia",
       country: asia,
+      icon: <FaGlobeAsia />,
     },
     {
       name: "Europe",
       country: europe,
+      icon: <FaGlobeEurope />,
     },
     {
       name: "Africa",
       country: africa,
+      icon: <FaGlobeAfrica />,
     },
     {
       name: "South America",
       country: southamerica,
+      icon: <FaGlobeAmericas />,
     },
     {
       name: "Oceania",
       country: oceania,
+      icon: <FaGlobeAsia />,
     },
     {
       name: "USA",
       country: regions.unitedstates.list,
+      icon: <Flag src="us" alt="us" />,
     },
     {
       name: "Canada",
       country: regions.canada.list,
+      icon: <Flag src="ca" alt="ca" />,
     },
     {
       name: "China",
       country: regions.china.list,
+      icon: <Flag src="cn" alt="cn" />,
     },
     {
       name: "Australia",
       country: regions.australia.list,
+      icon: <Flag src="au" alt="au" />,
     },
     {
       name: "Russia",
       country: regions.russia.list,
+      icon: <Flag src="ru" alt="ru" />,
     },
   ];
 
@@ -122,22 +172,40 @@ export default function Home({ totals, regions }) {
     <div className={classes.root}>
       <Head>
         <title>Covid19 tracker</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <Grid container spacing={3} className={classes.grid}>
+      <Header color="primary" brand="Cov19.uz" leftLinks={<HeaderLinks />} />
+      <Grid container spacing={2} className={classes.grid}>
         <Grid item xs={12} md={3}>
-          <CardComponent item={uzbekistan} />
+          <CardComponent item={uzbekistan} title="Uzbekistan" />
 
-          <CardComponent item={totals} />
+          <CardComponent item={totals} title="World" />
         </Grid>
 
         <Grid item xs={12} md={9}>
           <Paper className={classes.paper} elevation={3}>
-            <CustomButtonGroup handleClick={setRows} list={list} />
+            <CustomButtonGroup setRows={setRows} list={list} />
+          </Paper>
+          <Paper className={classes.paper} elevation={3} hidden={hideWatchlist}>
+            <TableCollapse
+              data={watchList}
+              addWatchlistItem={handleAddWatchListItem}
+              removeWatchlistItem={handleRemoveWatchListItem}
+              hideWatchlist={hideWatchlist}
+              watchlist={watchList}
+              setWatchList={setWatchList}
+            />
           </Paper>
           <Paper className={classes.paper} elevation={3}>
-            <TableCollapse data={rows.slice(pageStart, pageEnd)} />
+            <TableCollapse
+              data={rows
+                .sort((a, b) => b.confirmed - a.confirmed)
+                .slice(pageStart, pageEnd)}
+              addWatchlistItem={handleAddWatchListItem}
+              removeWatchlistItem={handleRemoveWatchListItem}
+              hideWatchlist={hideWatchlist}
+              watchList={watchList}
+              setWatchList={setWatchList}
+            />
             <Pagination
               setPage={setPage}
               setRowsPerPage={setRowsPerPage}

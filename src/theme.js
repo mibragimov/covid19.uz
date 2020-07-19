@@ -5,6 +5,7 @@ const theme = createMuiTheme({
     primary: {
       main: "#131b28",
       light: "#1B2435",
+      A700: "#222c45",
       contrastText: "#fff",
     },
     secondary: {
@@ -12,12 +13,13 @@ const theme = createMuiTheme({
     },
     warning: {
       main: "#CF9925",
+      dark: "#ffeb00",
     },
     success: {
       main: "#4caf50",
     },
     error: {
-      main: "#f44336",
+      main: "#ff3860",
     },
     info: {
       main: "#0ee9cb",
@@ -26,7 +28,19 @@ const theme = createMuiTheme({
       "900": "#999",
     },
     text: {
-      primary: "#fff",
+      primary: "#d8dce6",
+    },
+  },
+  overrides: {
+    MuiMenu: {
+      list: {
+        backgroundColor: "#1B2435",
+      },
+    },
+    MuiSelect: {
+      icon: {
+        color: "#fff",
+      },
     },
   },
 });
