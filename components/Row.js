@@ -88,21 +88,21 @@ function Row({ t, row, addWatchlistItem, removeWatchlistItem }) {
   const [isWatchlisted, setIsWatchlisted] = React.useState(false);
   const classes = useRowStyles();
 
-  React.useEffect(() => {
-    const list = localStorage.getItem("list");
+  // React.useEffect(() => {
+  //   const list = localStorage.getItem("list");
 
-    if (list) {
-      const x = JSON.parse(list).find((item) => item.country === row.country);
-      setIsWatchlisted(x);
-    }
-  }, []);
+  //   if (list) {
+  //     const x = JSON.parse(list).find((item) => item.country === row.country);
+  //     setIsWatchlisted(x);
+  //   }
+  // }, []);
 
   let currLang = i18n.language === "uz" ? "uz" : "en";
 
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
-        <TableCell>
+        {/* <TableCell>
           {isWatchlisted ? (
             <IconButton
               aria-label="expand row"
@@ -122,7 +122,7 @@ function Row({ t, row, addWatchlistItem, removeWatchlistItem }) {
               <FaRegStar />
             </IconButton>
           )}
-        </TableCell>
+        </TableCell> */}
         <TableCell>
           <IconButton
             aria-label="expand row"

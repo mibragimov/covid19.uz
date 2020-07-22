@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { withTranslation } from "../i18n";
-import uid from "uid";
+import { withTranslation, i18n } from "../i18n";
+import Input from "@material-ui/core/Input";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,6 +11,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Row from "./Row";
+import { Search } from "@material-ui/icons";
+var countries = require("i18n-iso-countries");
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
 
 const useTableStyles = makeStyles((theme) => ({
   root: {
@@ -29,12 +33,38 @@ function CollapsibleTable({
 }) {
   const classes = useTableStyles();
 
+  const [query, setQuery] = React.useState("");
+
+  let currLang = i18n.language === "uz" ? "uz" : "en";
+
+  const filteredArr = data.filter((item) => {
+    let locale = countries.getName(item.country_code, currLang).toLowerCase();
+    let term = query.toLowerCase().trim();
+
+    if (item.state) {
+      return item.state.toLowerCase().includes(term);
+    }
+
+    return locale.includes(term);
+  });
+
   return (
     <TableContainer component={Paper} className={classes.root}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
-            <TableCell />
+            <TableCell colSpan={12} align="right">
+              <Input
+                type="text"
+                placeholder={t("search")}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                startAdornment={<Search />}
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            {/* <TableCell /> */}
             <TableCell />
             <TableCell>{t("name")}</TableCell>
             <TableCell align="right">{t("confirmed")}</TableCell>
@@ -46,17 +76,13 @@ function CollapsibleTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => {
-            const id = uid();
-
+          {filteredArr.map((row) => {
             return (
               <Row
-                key={id}
                 row={row}
                 addWatchlistItem={addWatchlistItem}
                 removeWatchlistItem={removeWatchlistItem}
                 hideWatchList={hideWatchList}
-                id={id}
                 watchList={watchList}
                 setWatchList={setWatchList}
               />

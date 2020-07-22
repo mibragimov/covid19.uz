@@ -19,7 +19,10 @@
   "tests": "Tests",
   "data": "Data",
   "map": "Map",
-  "about": "About",
+  "sources": "Sources",
   "ratios": "Ratios",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "search": " Search",
+  "rowsPerPage": "rows per page:",
+  "all": "All"
 }

@@ -182,7 +182,7 @@ function Home({ totals, regions, t }) {
               setPage={setPage}
             />
           </Paper>
-          <Paper className={classes.paper} elevation={3} hidden={hideWatchlist}>
+          {/* <Paper className={classes.paper} elevation={3} hidden={hideWatchlist}>
             <TableCollapse
               data={watchList}
               addWatchlistItem={handleAddWatchListItem}
@@ -191,7 +191,7 @@ function Home({ totals, regions, t }) {
               watchlist={watchList}
               setWatchList={setWatchList}
             />
-          </Paper>
+          </Paper> */}
           <Paper className={classes.paper} elevation={3}>
             <TableCollapse
               data={rows
@@ -202,7 +202,6 @@ function Home({ totals, regions, t }) {
               hideWatchlist={hideWatchlist}
               watchList={watchList}
               setWatchList={setWatchList}
-              t={t}
             />
             <Pagination
               setPage={setPage}
@@ -215,7 +214,9 @@ function Home({ totals, regions, t }) {
         </Grid>
       </Grid>
       <Box className={classes.box}>
-        <Typography variant="caption">2020 @mibragimov</Typography>
+        <Typography variant="caption" color="secondary">
+          By @mibragimov 2020
+        </Typography>
       </Box>
     </Layout>
   );
