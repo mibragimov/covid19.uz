@@ -222,7 +222,7 @@ function Home({ totals, regions, t }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps() {
   const { data } = await Axios.get("https://cov19.cc/report.json");
 
   return {
