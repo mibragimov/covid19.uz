@@ -194,11 +194,6 @@ function Home({ totals, regions, t }) {
               data={rows
                 .sort((a, b) => b.confirmed - a.confirmed)
                 .slice(pageStart, pageEnd)}
-              addWatchlistItem={handleAddWatchListItem}
-              removeWatchlistItem={handleRemoveWatchListItem}
-              hideWatchlist={hideWatchlist}
-              watchList={watchList}
-              setWatchList={setWatchList}
             />
             <Pagination
               setPage={setPage}

@@ -25,11 +25,7 @@ const useTableStyles = makeStyles((theme) => ({
 
 function CollapsibleTable({
   data,
-  addWatchlistItem,
-  removeWatchlistItem,
-  hideWatchList,
-  watchList,
-  setWatchList,
+
   t,
 }) {
   const classes = useTableStyles();
@@ -79,17 +75,7 @@ function CollapsibleTable({
         <TableBody>
           {filteredArr.map((row) => {
             const id = uid();
-            return (
-              <Row
-                key={id}
-                row={row}
-                addWatchlistItem={addWatchlistItem}
-                removeWatchlistItem={removeWatchlistItem}
-                hideWatchList={hideWatchList}
-                watchList={watchList}
-                setWatchList={setWatchList}
-              />
-            );
+            return <Row key={id} row={row} />;
           })}
         </TableBody>
       </Table>

@@ -83,7 +83,7 @@ const useRowStyles = makeStyles((theme) => ({
   },
 }));
 
-function Row({ t, row, addWatchlistItem, removeWatchlistItem }) {
+function Row({ t, row }) {
   const [open, setOpen] = React.useState(false);
   const [isWatchlisted, setIsWatchlisted] = React.useState(false);
   const classes = useRowStyles();
