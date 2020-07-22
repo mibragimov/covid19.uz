@@ -22,6 +22,23 @@ function MyApp(props) {
     <React.Fragment>
       <Head>
         <title>Coronavirus info | cov19.uz</title>
+        <meta name="robots" content="Коронавирус инфекцияси (COVID-19)"></meta>
+        <meta
+          name="googlebot"
+          content="Коронавирус инфекцияси (COVID-19)"
+        ></meta>
+        <meta property="og:title" content="Coronavirus info" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://cov19.uz/" />
+        <meta property="og:locale" content="uz" />
+        <meta
+          property="og:image"
+          content="https://unsplash.com/photos/awlMxCVBaIY"
+        />
+        <meta
+          name="og:description"
+          content="КОРОНАВИРУС ИНФЕКЦИЯСИ (COVID-19) ТЎҒРИСИДА МАЪЛУМОТЛАР"
+        ></meta>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -35,11 +52,11 @@ function MyApp(props) {
     </React.Fragment>
   );
 }
-MyApp.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext);
+// MyApp.getInitialProps = async (appContext) => {
+//   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps };
-};
+//   return { ...appProps };
+// };
 
 export default appWithTranslation(MyApp);
 

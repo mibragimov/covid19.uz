@@ -37,7 +37,7 @@ function TransitionUp(props) {
 export default function Icon({ children, title, icon }) {
   const [open, setOpen] = React.useState(false);
   const [transition, setTransition] = React.useState(undefined);
-  const linkString = "http://example.com";
+  const linkString = "https://cov19.uz";
 
   const props = {
     backgroundColor:

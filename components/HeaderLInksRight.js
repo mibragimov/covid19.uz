@@ -8,7 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Language, Translate } from "@material-ui/icons";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
 // core components
@@ -29,7 +28,7 @@ function HeaderLinks({ t }) {
           }
         >
           <Translate />
-          {i18n.language === "en" ? "en" : "uz"}
+          {i18n.language === "en" ? "uz" : "en"}
         </IconButton>
       </ListItem>
     </List>
