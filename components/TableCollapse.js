@@ -18,8 +18,9 @@ countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
 
 const useTableStyles = makeStyles((theme) => ({
-  root: {
+  container: {
     backgroundColor: theme.palette.primary.light,
+    maxHeight: 900,
   },
 }));
 
@@ -46,7 +47,7 @@ function CollapsibleTable({
   });
 
   return (
-    <TableContainer component={Paper} className={classes.root}>
+    <TableContainer component={Paper} className={classes.container}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>

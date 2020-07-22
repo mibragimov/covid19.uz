@@ -191,17 +191,15 @@ function Home({ totals, regions, t }) {
           </Paper> */}
           <Paper className={classes.paper} elevation={3}>
             <TableCollapse
-              data={rows
-                .sort((a, b) => b.confirmed - a.confirmed)
-                .slice(pageStart, pageEnd)}
+              data={rows.sort((a, b) => b.confirmed - a.confirmed)}
             />
-            <Pagination
+            {/* <Pagination
               setPage={setPage}
               setRowsPerPage={setRowsPerPage}
               page={page}
               rowsPerPage={rowsPerPage}
               count={rows.length}
-            />
+            /> */}
           </Paper>
         </Grid>
       </Grid>
