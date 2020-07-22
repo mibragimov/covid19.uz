@@ -43,32 +43,32 @@ function Home({ totals, regions, t }) {
   const [watchList, setWatchList] = useState([]);
   const [hideWatchlist, setHideWatchlist] = useState(true);
 
-  const handleAddWatchListItem = (row) => {
-    setWatchList((prevState) => [...prevState, row]);
-    localStorage.setItem("list", JSON.stringify(watchList));
-    if (!watchList.length) {
-      setHideWatchlist(false);
-    }
-  };
+  // const handleAddWatchListItem = (row) => {
+  //   setWatchList((prevState) => [...prevState, row]);
+  //   localStorage.setItem("list", JSON.stringify(watchList));
+  //   if (!watchList.length) {
+  //     setHideWatchlist(false);
+  //   }
+  // };
 
-  const handleRemoveWatchListItem = (row) => {
-    const filteredArr = watchList.filter(
-      (item) => item.country !== row.country
-    );
-    if (!filteredArr.length) {
-      setHideWatchlist(true);
-    }
-    setWatchList(filteredArr);
-    localStorage.setItem("list", JSON.stringify(filteredArr));
-  };
+  // const handleRemoveWatchListItem = (row) => {
+  //   const filteredArr = watchList.filter(
+  //     (item) => item.country !== row.country
+  //   );
+  //   if (!filteredArr.length) {
+  //     setHideWatchlist(true);
+  //   }
+  //   setWatchList(filteredArr);
+  //   localStorage.setItem("list", JSON.stringify(filteredArr));
+  // };
 
-  React.useEffect(() => {
-    const list = localStorage.getItem("list");
+  // React.useEffect(() => {
+  //   const list = localStorage.getItem("list");
 
-    if (list.length) {
-      setWatchList(JSON.parse(list));
-    }
-  }, []);
+  //   if (list.length) {
+  //     setWatchList(JSON.parse(list));
+  //   }
+  // }, []);
 
   // Pagination
   const [page, setPage] = useState(0);
