@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
+import App from "next/app";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import { appWithTranslation } from "../i18n";
 
-function App(props) {
+function MyApp(props) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -34,13 +35,13 @@ function App(props) {
     </React.Fragment>
   );
 }
-// App.getInitialProps = async (appContext) => {
-//   const appProps = await App.getInitialProps(appContext);
+MyApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext);
 
-//   return { ...appProps };
-// };
+  return { ...appProps };
+};
 
-export default appWithTranslation(App);
+export default appWithTranslation(MyApp);
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,

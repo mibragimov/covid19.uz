@@ -6,8 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import Header from "../components/Header";
 import CardComponent from "../components/Card";
 import TableCollapse from "../components/TableCollapse";
 import Pagination from "../components/Pagination";
@@ -20,7 +18,6 @@ import {
   FaLanguage,
 } from "react-icons/fa";
 import Flag from "../components/Flag";
-import HeaderLinks from "../components/HeaderLinks";
 import Layout from "../components/Layout";
 import { withTranslation } from "../i18n";
 
@@ -230,7 +227,7 @@ export async function getStaticProps() {
       totals: data.regions.world.totals,
       regions: data.regions,
       updated: data.last_updated,
-      namespacesRequired: ["home", "common"],
+      namespacesRequired: ["common", "home"],
     },
   };
 }

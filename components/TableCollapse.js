@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Row from "./Row";
 import { Search } from "@material-ui/icons";
+import uid from "uid";
 var countries = require("i18n-iso-countries");
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
@@ -77,8 +78,10 @@ function CollapsibleTable({
         </TableHead>
         <TableBody>
           {filteredArr.map((row) => {
+            const id = uid();
             return (
               <Row
+                key={id}
                 row={row}
                 addWatchlistItem={addWatchlistItem}
                 removeWatchlistItem={removeWatchlistItem}
