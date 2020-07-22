@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -18,6 +19,11 @@ import {
   FaRegStar,
   FaStar,
 } from "react-icons/fa";
+import { withTranslation, i18n } from "../i18n";
+var countries = require("i18n-iso-countries");
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/ru.json"));
 
 const useRowStyles = makeStyles((theme) => ({
   root: {
@@ -77,13 +83,7 @@ const useRowStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Row({
-  row,
-  addWatchlistItem,
-  removeWatchlistItem,
-  watchList = [],
-  setWatchList,
-}) {
+function Row({ t, row, addWatchlistItem, removeWatchlistItem }) {
   const [open, setOpen] = React.useState(false);
   const [isWatchlisted, setIsWatchlisted] = React.useState(false);
   const classes = useRowStyles();
@@ -96,6 +96,8 @@ export default function Row({
       setIsWatchlisted(x);
     }
   }, []);
+
+  let currLang = i18n.language === "uz" ? "uz" : "en";
 
   return (
     <React.Fragment>
@@ -134,7 +136,9 @@ export default function Row({
         <TableCell component="th" scope="row" className={classes.head}>
           <Flag src={row.country_code} alt={row.country_code} m />
           <Typography variant="subtitle1">
-            {row.state ? row.state : row.country}
+            {row.state
+              ? row.state
+              : countries.getName(row.country_code, currLang)}
           </Typography>
         </TableCell>
 
@@ -150,7 +154,7 @@ export default function Row({
         </TableCell>
         <TableCell align="right">
           <Typography className={classes.deaths}>
-            {row.deaths !== -1 ? numberWithCommas(row.deaths) : "Unknown"}
+            {row.deaths !== -1 ? numberWithCommas(row.deaths) : t("unknown")}
           </Typography>
           <span className={classNames(classes.span, classes.deaths)}>
             {row.daily_deaths && row.daily_deaths !== -1
@@ -160,7 +164,9 @@ export default function Row({
         </TableCell>
         <TableCell align="right">
           <Typography className={classes.critical}>
-            {row.critical !== -1 ? numberWithCommas(row.critical) : "Unknown"}
+            {row.critical !== -1
+              ? numberWithCommas(row.critical)
+              : t("unknown")}
           </Typography>
         </TableCell>
         <TableCell align="right">
@@ -171,12 +177,14 @@ export default function Row({
 
         <TableCell align="right">
           <Typography className={classes.tests}>
-            {row.tests !== -1 ? numberWithCommas(row.tests) : "Unknown"}
+            {row.tests !== -1 ? numberWithCommas(row.tests) : t("unknown")}
           </Typography>
         </TableCell>
         <TableCell align="right">
           <Typography className={classes.recovered}>
-            {row.recovered !== -1 ? numberWithCommas(row.recovered) : "Unknown"}
+            {row.recovered !== -1
+              ? numberWithCommas(row.recovered)
+              : t("unknown")}
           </Typography>
         </TableCell>
       </TableRow>
@@ -186,7 +194,7 @@ export default function Row({
             <Box margin={1}>
               <Box component="span" className={classes.heartBox}>
                 <FaHeartbeat className={classes.heart} />
-                <Typography variant="h5">Ratios</Typography>
+                <Typography variant="h5">{t("ratios")}</Typography>
               </Box>
               <Grid
                 container
@@ -214,3 +222,9 @@ export default function Row({
     </React.Fragment>
   );
 }
+
+Row.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(Row);

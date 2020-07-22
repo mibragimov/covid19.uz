@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Chart } from "chart.js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Box } from "@material-ui/core";
+import { withTranslation } from "../i18n";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DoughnutChart({ confirmed, recovered, deceased }) {
+function DoughnutChart({ confirmed, recovered, deceased, t }) {
   const chartRef = useRef();
   let doughnutChart;
 
@@ -63,14 +65,16 @@ export default function DoughnutChart({ confirmed, recovered, deceased }) {
     ],
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: ["confirmed", deceased ? "deceased" : "recovered"],
+    labels: [t("confirmed"), deceased ? t("deaths") : t("recovered")],
   };
 
   const options = {
     legend: { display: false },
     title: {
       display: true,
-      text: deceased ? "Confirmed / Deceased" : "Confirmed / Recovered ",
+      text: deceased
+        ? `${t("confirmed")} / ${t("deaths")}`
+        : `${t("confirmed")} / ${t("recovered")}`,
       fontSize: 20,
       fontColor: "#d8dce6",
     },
@@ -87,10 +91,16 @@ export default function DoughnutChart({ confirmed, recovered, deceased }) {
       <Box className={classes.percentage}>
         <span className={classes.number}>{Math.abs(percent) + "%"}</span>
         <span className={classes.text}>
-          {deceased ? "Deceased" : "Recovered"}
+          {deceased ? t("deaths") : t("recovered")}
         </span>
       </Box>
       <canvas ref={chartRef}></canvas>
     </Paper>
   );
 }
+
+DoughnutChart.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(DoughnutChart);

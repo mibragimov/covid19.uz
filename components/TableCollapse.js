@@ -1,5 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import { withTranslation } from "../i18n";
 import uid from "uid";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,13 +18,14 @@ const useTableStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CollapsibleTable({
+function CollapsibleTable({
   data,
   addWatchlistItem,
   removeWatchlistItem,
   hideWatchList,
   watchList,
   setWatchList,
+  t,
 }) {
   const classes = useTableStyles();
 
@@ -33,13 +36,13 @@ export default function CollapsibleTable({
           <TableRow>
             <TableCell />
             <TableCell />
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Confirmed</TableCell>
-            <TableCell align="right">Deceased</TableCell>
-            <TableCell align="right">Critical</TableCell>
-            <TableCell align="right">Active</TableCell>
-            <TableCell align="right">Tests</TableCell>
-            <TableCell align="right">Recovered</TableCell>
+            <TableCell>{t("name")}</TableCell>
+            <TableCell align="right">{t("confirmed")}</TableCell>
+            <TableCell align="right">{t("deaths")}</TableCell>
+            <TableCell align="right">{t("critical")}</TableCell>
+            <TableCell align="right">{t("active")}</TableCell>
+            <TableCell align="right">{t("tests")}</TableCell>
+            <TableCell align="right">{t("recovered")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,3 +67,9 @@ export default function CollapsibleTable({
     </TableContainer>
   );
 }
+
+CollapsibleTable.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("common")(CollapsibleTable);

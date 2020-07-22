@@ -70,10 +70,8 @@ const MapChart = ({ setTooltipContent, world }) => {
 
     if (country.confirmed > 1000000) {
       return error;
-    } else if (country.confirmed > 200000) {
-      return warning;
     } else if (country.confirmed > 100000) {
-      return info;
+      return warning;
     } else if (country.confirmed < 100000) {
       return success;
     }
@@ -103,7 +101,10 @@ const MapChart = ({ setTooltipContent, world }) => {
                       (item) => item.country_code === ISO_A2.toLowerCase()
                     );
                     if (info) {
-                      setTooltipContent(info);
+                      setTooltipContent({
+                        country: NAME,
+                        ...info,
+                      });
                     } else {
                       setTooltipContent({
                         country: NAME,

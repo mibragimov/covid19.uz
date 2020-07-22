@@ -5,8 +5,9 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
+import { appWithTranslation } from "../i18n";
 
-export default function MyApp(props) {
+function App(props) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -34,8 +35,15 @@ export default function MyApp(props) {
     </React.Fragment>
   );
 }
+// App.getInitialProps = async (appContext) => {
+//   const appProps = await App.getInitialProps(appContext);
 
-MyApp.propTypes = {
+//   return { ...appProps };
+// };
+
+export default appWithTranslation(App);
+
+App.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };

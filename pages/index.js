@@ -1,5 +1,5 @@
-import Head from "next/head";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -21,12 +21,10 @@ import {
 } from "react-icons/fa";
 import Flag from "../components/Flag";
 import HeaderLinks from "../components/HeaderLinks";
+import Layout from "../components/Layout";
+import { withTranslation } from "../i18n";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.primary.main,
-  },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ totals, regions }) {
+function Home({ totals, regions, t }) {
   const [rows, setRows] = useState(regions.world.list);
   const [watchList, setWatchList] = useState([]);
   const [hideWatchlist, setHideWatchlist] = useState(true);
@@ -70,9 +68,8 @@ export default function Home({ totals, regions }) {
   React.useEffect(() => {
     const list = localStorage.getItem("list");
 
-    if (list) {
+    if (list.length) {
       setWatchList(JSON.parse(list));
-      setHideWatchlist(false);
     }
   }, []);
 
@@ -100,57 +97,57 @@ export default function Home({ totals, regions }) {
 
   const list = [
     {
-      name: "World",
+      name: t("common:world"),
       country: regions.world.list,
       icon: <FaLanguage />,
     },
     {
-      name: "Asia",
+      name: t("common:asia"),
       country: asia,
       icon: <FaGlobeAsia />,
     },
     {
-      name: "Europe",
+      name: t("common:europe"),
       country: europe,
       icon: <FaGlobeEurope />,
     },
     {
-      name: "Africa",
+      name: t("common:africa"),
       country: africa,
       icon: <FaGlobeAfrica />,
     },
     {
-      name: "South America",
+      name: t("common:southamerica"),
       country: southamerica,
       icon: <FaGlobeAmericas />,
     },
     {
-      name: "Oceania",
+      name: t("common:oceania"),
       country: oceania,
       icon: <FaGlobeAsia />,
     },
     {
-      name: "USA",
+      name: t("common:usa"),
       country: regions.unitedstates.list,
       icon: <Flag src="us" alt="us" />,
     },
     {
-      name: "Canada",
+      name: t("common:canada"),
       country: regions.canada.list,
       icon: <Flag src="ca" alt="ca" />,
     },
     {
-      name: "China",
+      name: t("common:china"),
       country: regions.china.list,
       icon: <Flag src="cn" alt="cn" />,
     },
     {
-      name: "Australia",
+      name: t("common:australia"),
       country: regions.australia.list,
       icon: <Flag src="au" alt="au" />,
     },
     {
-      name: "Russia",
+      name: t("common:russia"),
       country: regions.russia.list,
       icon: <Flag src="ru" alt="ru" />,
     },
@@ -169,21 +166,21 @@ export default function Home({ totals, regions }) {
   }
 
   return (
-    <div className={classes.root}>
-      <Head>
-        <title>Covid19 tracker</title>
-      </Head>
-      <Header color="primary" brand="Cov19.uz" leftLinks={<HeaderLinks />} />
+    <Layout>
       <Grid container spacing={2} className={classes.grid}>
         <Grid item xs={12} md={3}>
-          <CardComponent item={uzbekistan} title="Uzbekistan" />
+          <CardComponent item={uzbekistan} title={t("uz")} />
 
-          <CardComponent item={totals} title="World" />
+          <CardComponent item={totals} title={t("global")} />
         </Grid>
 
         <Grid item xs={12} md={9}>
           <Paper className={classes.paper} elevation={3}>
-            <CustomButtonGroup setRows={setRows} list={list} />
+            <CustomButtonGroup
+              setRows={setRows}
+              list={list}
+              setPage={setPage}
+            />
           </Paper>
           <Paper className={classes.paper} elevation={3} hidden={hideWatchlist}>
             <TableCollapse
@@ -205,6 +202,7 @@ export default function Home({ totals, regions }) {
               hideWatchlist={hideWatchlist}
               watchList={watchList}
               setWatchList={setWatchList}
+              t={t}
             />
             <Pagination
               setPage={setPage}
@@ -219,7 +217,7 @@ export default function Home({ totals, regions }) {
       <Box className={classes.box}>
         <Typography variant="caption">2020 @mibragimov</Typography>
       </Box>
-    </div>
+    </Layout>
   );
 }
 
@@ -231,6 +229,13 @@ export async function getServerSideProps(context) {
       totals: data.regions.world.totals,
       regions: data.regions,
       updated: data.last_updated,
+      namespacesRequired: ["home", "common"],
     },
   };
 }
+
+Home.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("home")(Home);

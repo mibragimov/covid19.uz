@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
+import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Box } from "@material-ui/core";
@@ -11,6 +11,7 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 import StyledBadge from "./StyledBadge";
 import { FaBullhorn, FaLink, FaFacebookF, FaTwitter } from "react-icons/fa";
 import Icon from "./Icon";
+import { i18n, withTranslation } from "../i18n";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,8 +71,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CardComponent({ item, title }) {
+function CardComponent({ item, title, t }) {
   const classes = useStyles();
+
+  React.useEffect(() => {
+    if (i18n.language === "uz") {
+      moment.locale("uz");
+    } else {
+      moment.locale("en");
+    }
+  });
 
   return (
     <Card className={classes.root} raised>
@@ -85,9 +94,7 @@ export default function CardComponent({ item, title }) {
 
         <Box marginBottom={2} className={classes.textBox}>
           <FaBullhorn className={classes.bullhorn} />
-          <Typography variant="caption">
-            specific country data may be delayed
-          </Typography>
+          <Typography variant="caption">{t("bullhorn")}</Typography>
         </Box>
 
         <Typography
@@ -95,55 +102,65 @@ export default function CardComponent({ item, title }) {
           className={classNames(classes.h3, classes.confirmed)}
         >
           {numberWithCommas(item.confirmed)}
-          <span className={classes.span}>Confirmed Cases</span>
+          <span className={classes.span}>{t("common:confirmed")}</span>
         </Typography>
         <Typography
           variant="h4"
           className={classNames(classes.h3, classes.recovered)}
         >
           {numberWithCommas(item.recovered)}
-          <span className={classes.span}>Recovered</span>
+          <span className={classes.span}>{t("common:recovered")}</span>
         </Typography>
         <Typography
           variant="h4"
           className={classNames(classes.h3, classes.active)}
         >
           {numberWithCommas(item.confirmed - item.recovered - item.deaths)}
-          <span className={classes.span}>Active</span>
+          <span className={classes.span}>{t("common:active")}</span>
         </Typography>
         <Typography
           variant="h4"
           className={classNames(classes.h3, classes.critical)}
         >
           {numberWithCommas(item.critical)}
-          <span className={classes.span}>Critical</span>
+          <span className={classes.span}>{t("common:critical")}</span>
         </Typography>
         <Typography
           variant="h4"
           className={classNames(classes.h3, classes.deaths)}
         >
           {numberWithCommas(item.deaths)}
-          <span className={classes.span}>Deaths</span>
+          <span className={classes.span}>{t("common:deaths")}</span>
         </Typography>
 
         <Box marginBottom={2} marginTop={2}>
-          <Icon title="Copy Link" icon="link">
+          <Icon title={t("copyLink")} icon="link">
             <FaLink />
           </Icon>
 
-          <Icon title="Share to Facebook" icon="facebook">
+          <Icon title={t("shareFb")} icon="facebook">
             <FaFacebookF />
           </Icon>
 
-          <Icon title="Share to Twitter" icon="twitter">
+          <Icon title={t("shareTw")} icon="twitter">
             <FaTwitter />
           </Icon>
         </Box>
 
         <Typography variant="caption">
-          Last updated: {moment(item.last_updated).fromNow()}
+          {t("lastUpdated")}: {moment(item.last_updated).fromNow()}
         </Typography>
       </CardContent>
     </Card>
   );
 }
+
+CardComponent.getInitialProps = async () => ({
+  namespacesRequired: ["card", "common"],
+});
+
+CardComponent.propTypes = {
+  t: PropTypes.func.isRequired,
+};
+
+export default withTranslation("card")(CardComponent);

@@ -1,18 +1,20 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 import axios from "axios";
 import { Typography, makeStyles, Box } from "@material-ui/core";
 import Flag from "../components/Flag";
 import MapChart from "../components/MapChart";
 import { numberWithCommas } from "../utils/numberWithCommas";
-import Header from "../components/Header";
-import HeaderLinks from "../components/HeaderLinks";
+import Layout from "../components/Layout";
+import { withTranslation, i18n } from "../i18n";
+
+var countries = require("i18n-iso-countries");
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/ru.json"));
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.primary.main,
-    height: "100vh",
-  },
   box: {
     display: "flex",
     flexDirection: "column",
@@ -51,46 +53,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Map({ world }) {
+function Map({ world, t }) {
   const [content, setContent] = useState("");
 
   const classes = useStyles();
+  let currLang = i18n.language === "uz" ? "uz" : "en";
+
   return (
-    <div className={classes.root}>
-      <Header color="primary" brand="Cov19.uz" leftLinks={<HeaderLinks />} />
+    <Layout>
       <MapChart setTooltipContent={setContent} world={world} />
       <ReactTooltip backgroundColor="#1B2435">
         {content ? (
           <Box>
             <Box component="span" className={classes.span}>
               <Flag src={content.country_code} alt={content.country} />
-              <Typography>{content.country}</Typography>
+              <Typography>
+                {countries.getName(content.country_code, currLang)}
+              </Typography>
             </Box>
 
             <Box className={classes.box}>
               <Typography variant="caption" className={classes.p}>
-                Confirmed:
+                {t("confirmed")}:
                 <span className={classes.confirmed}>
                   {content.confirmed === -1
-                    ? "Unknown"
+                    ? t("unknown")
                     : numberWithCommas(content.confirmed)}
                 </span>
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                Recovered:
+                {t("recovered")}:
                 <span className={classes.recovered}>
                   {content.recovered === -1
-                    ? "Unknown"
+                    ? t("unknown")
                     : numberWithCommas(content.recovered)}
                 </span>
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                Active:
+                {t("active")}:
                 <span className={classes.active}>
                   {content.confirmed === -1
-                    ? "Unknown"
+                    ? t("unknown")
                     : numberWithCommas(
                         content.confirmed - content.recovered - content.deaths
                       )}
@@ -98,18 +103,18 @@ export default function Map({ world }) {
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                Deaths:
+                {t("deaths")}:
                 <span className={classes.deaths} variant="caption">
                   {content.deaths === -1
-                    ? "Unknown"
+                    ? t("unknown")
                     : numberWithCommas(content.deaths)}
                 </span>
               </Typography>
               <Typography variant="caption" className={classes.p}>
-                Tests:
+                {t("tests")}:
                 <span className={classes.tests} variant="caption">
                   {content.tests === -1
-                    ? "Unknown"
+                    ? t("unknown")
                     : numberWithCommas(content.tests)}
                 </span>
               </Typography>
@@ -119,9 +124,13 @@ export default function Map({ world }) {
           ""
         )}
       </ReactTooltip>
-    </div>
+    </Layout>
   );
 }
+
+Map.propTypes = {
+  t: PropTypes.func.isRequired,
+};
 
 export async function getStaticProps() {
   const { data } = await axios.get("https://cov19.cc/report.json");
@@ -131,6 +140,9 @@ export async function getStaticProps() {
       totals: data.regions.world.totals,
       world: data.regions.world,
       updated: data.last_updated,
+      namespacesRequired: ["common"],
     },
   };
 }
+
+export default withTranslation("common")(Map);
