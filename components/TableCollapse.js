@@ -33,7 +33,7 @@ function CollapsibleTable({
 
   const [query, setQuery] = React.useState("");
 
-  let currLang = i18n.language === "uz" ? "uz" : "en";
+  let currLang = i18n.language === "uz" ? "uz" : "ru";
 
   const filteredArr = data.filter((item) => {
     let locale = countries.getName(item.country_code, currLang).toLowerCase();

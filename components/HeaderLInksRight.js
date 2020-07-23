@@ -5,7 +5,7 @@ import { i18n, withTranslation } from "../i18n";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Language, Translate } from "@material-ui/icons";
+import { Translate } from "@material-ui/icons";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,27 +16,24 @@ import styles from "../jss/material-kit-react/components/headerLinksStyle";
 
 const useStyles = makeStyles(styles);
 
-function HeaderLinks({ t }) {
+function HeaderLinks() {
   const classes = useStyles();
+
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         <IconButton
           className={classes.navLink}
           onClick={() =>
-            i18n.changeLanguage(i18n.language === "en" ? "uz" : "en")
+            i18n.changeLanguage(i18n.language === "uz" ? "ru" : "uz")
           }
         >
           <Translate />
-          {i18n.language === "en" ? "uz" : "en"}
+          {i18n.language === "ru" ? "uz" : "ru"}
         </IconButton>
       </ListItem>
     </List>
   );
 }
 
-HeaderLinks.propTypes = {
-  t: PropTypes.func.isRequired,
-};
-
-export default withTranslation("common")(HeaderLinks);
+export default HeaderLinks;

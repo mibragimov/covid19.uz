@@ -97,7 +97,7 @@ function Row({ t, row }) {
   //   }
   // }, []);
 
-  let currLang = i18n.language === "uz" ? "uz" : "en";
+  let currLang = i18n.language === "uz" ? "uz" : "ru";
 
   return (
     <React.Fragment>

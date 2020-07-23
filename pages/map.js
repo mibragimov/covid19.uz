@@ -57,7 +57,7 @@ function Map({ world, t }) {
   const [content, setContent] = useState("");
 
   const classes = useStyles();
-  let currLang = i18n.language === "uz" ? "uz" : "en";
+  let currLang = i18n.language === "uz" ? "uz" : "ru";
 
   return (
     <Layout>

@@ -74,13 +74,9 @@ const useStyles = makeStyles((theme) => ({
 function CardComponent({ item, title, t }) {
   const classes = useStyles();
 
-  React.useEffect(() => {
-    if (i18n.language === "uz") {
-      moment.locale("uz");
-    } else {
-      moment.locale("en");
-    }
-  });
+  let updated = moment(item.last_updated);
+  let locale = i18n.language;
+  updated.locale(locale);
 
   return (
     <Card className={classes.root} raised>
@@ -148,7 +144,7 @@ function CardComponent({ item, title, t }) {
         </Box>
 
         <Typography variant="caption">
-          {t("lastUpdated")}: {moment(item.last_updated).fromNow()}
+          {t("lastUpdated")}: {updated.fromNow()}
         </Typography>
       </CardContent>
     </Card>

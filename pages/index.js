@@ -212,15 +212,19 @@ function Home({ totals, regions, t }) {
   );
 }
 
+Home.defaultProps = {
+  i18nNamespaces: ["home"],
+};
+
 export async function getStaticProps() {
   const { data } = await Axios.get("https://cov19.cc/report.json");
 
   return {
     props: {
+      namespacesRequired: ["home"],
       totals: data.regions.world.totals,
       regions: data.regions,
       updated: data.last_updated,
-      namespacesRequired: ["common", "home"],
     },
   };
 }

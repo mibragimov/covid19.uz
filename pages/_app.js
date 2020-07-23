@@ -36,7 +36,7 @@ function MyApp(props) {
           content="https://unsplash.com/photos/awlMxCVBaIY"
         />
         <meta
-          name="og:description"
+          property="og:description"
           content="КОРОНАВИРУС ИНФЕКЦИЯСИ (COVID-19) ТЎҒРИСИДА МАЪЛУМОТЛАР"
         ></meta>
         <meta
@@ -52,15 +52,10 @@ function MyApp(props) {
     </React.Fragment>
   );
 }
-// MyApp.getInitialProps = async (appContext) => {
-//   const appProps = await App.getInitialProps(appContext);
-
-//   return { ...appProps };
-// };
 
 export default appWithTranslation(MyApp);
 
-App.propTypes = {
+MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
