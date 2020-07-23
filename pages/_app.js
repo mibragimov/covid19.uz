@@ -6,6 +6,8 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import { appWithTranslation } from "../i18n";
+import { DefaultSeo } from "next-seo";
+import SEO from "../next-seo.config";
 
 function MyApp(props) {
   const { Component, pageProps } = props;
@@ -20,28 +22,15 @@ function MyApp(props) {
 
   return (
     <React.Fragment>
+      <DefaultSeo {...SEO} />
       <Head>
-        <title>Coronavirus info | cov19.uz</title>
-        <meta name="robots" content="Коронавирус инфекцияси (COVID-19)"></meta>
-        <meta
-          name="googlebot"
-          content="Коронавирус инфекцияси (COVID-19)"
-        ></meta>
-        <meta property="og:title" content="Coronavirus info" />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://cov19.uz/" />
-        <meta property="og:locale" content="uz" />
-        <meta
-          property="og:image"
-          content="https://unsplash.com/photos/awlMxCVBaIY"
-        />
-        <meta
-          property="og:description"
-          content="КОРОНАВИРУС ИНФЕКЦИЯСИ (COVID-19) ТЎҒРИСИДА МАЪЛУМОТЛАР"
-        ></meta>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+        <meta
+          name="keywords"
+          content="коронавирус, ковид-19, кузатувчи, бошқарув панели, тайёрланиш, олдини олиш, тенденциялар, статистика, маълумотлар"
         />
       </Head>
       <ThemeProvider theme={theme}>
