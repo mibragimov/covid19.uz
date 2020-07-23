@@ -19,6 +19,20 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           ></link>
           <link rel="icon" href="favicon.ico" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-69J0MS8Y7Q"></script>
+                <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-69J0MS8Y7Q');
+                </script>
+              `,
+            }}
+          />
         </Head>
         <body>
           <Main />
