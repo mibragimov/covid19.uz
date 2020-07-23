@@ -6,9 +6,8 @@ import { GA_TRACKING_ID } from "../lib/gtag";
 
 export default class MyDocument extends Document {
   render() {
-    console.log(this.props);
     return (
-      <Html lang="uz">
+      <Html lang={this.props.initialLanguage || "ru"}>
         <Head>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script
