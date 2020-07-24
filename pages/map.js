@@ -132,7 +132,7 @@ Map.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export async function getServerSideProps(context) {
+export async function getStaticProps() {
   const { data } = await axios.get("https://cov19.cc/report.json");
 
   return {
