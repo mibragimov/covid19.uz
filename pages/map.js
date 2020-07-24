@@ -132,7 +132,7 @@ Map.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const { data } = await axios.get("https://cov19.cc/report.json");
 
   return {
@@ -140,7 +140,6 @@ export async function getStaticProps() {
       totals: data.regions.world.totals,
       world: data.regions.world,
       updated: data.last_updated,
-      namespacesRequired: ["common"],
     },
   };
 }

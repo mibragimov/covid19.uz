@@ -216,12 +216,11 @@ Home.defaultProps = {
   i18nNamespaces: ["home"],
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const { data } = await Axios.get("https://cov19.cc/report.json");
 
   return {
     props: {
-      namespacesRequired: ["home"],
       totals: data.regions.world.totals,
       regions: data.regions,
       updated: data.last_updated,
