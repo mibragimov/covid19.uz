@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
-import axios from "axios";
-import { Typography, makeStyles, Box } from "@material-ui/core";
-import Flag from "../components/Flag";
-import MapChart from "../components/MapChart";
-import { numberWithCommas } from "../utils/numberWithCommas";
-import Layout from "../components/Layout";
-import { withTranslation, i18n } from "../i18n";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
+import axios from 'axios';
+import { Typography, makeStyles, Box } from '@material-ui/core';
+import Flag from '../components/Flag';
+import MapChart from '../components/MapChart';
+import { numberWithCommas } from '../utils/numberWithCommas';
+import Layout from '../components/Layout';
+import { withTranslation, i18n } from '../i18n';
 
-var countries = require("i18n-iso-countries");
-countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
-countries.registerLocale(require("i18n-iso-countries/langs/uz.json"));
-countries.registerLocale(require("i18n-iso-countries/langs/ru.json"));
+var countries = require('i18n-iso-countries');
+countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+countries.registerLocale(require('i18n-iso-countries/langs/uz.json'));
+countries.registerLocale(require('i18n-iso-countries/langs/ru.json'));
 
 const useStyles = makeStyles((theme) => ({
   box: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   span: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   p: {
     fontWeight: 600,
 
-    "& span": {
+    '& span': {
       marginLeft: theme.spacing(2),
     },
   },
@@ -54,10 +54,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Map({ world, t }) {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
 
   const classes = useStyles();
-  let currLang = i18n.language === "uz" ? "uz" : "ru";
+  let currLang = i18n.language === 'uz' ? 'uz' : 'ru';
 
   return (
     <Layout>
@@ -74,28 +74,28 @@ function Map({ world, t }) {
 
             <Box className={classes.box}>
               <Typography variant="caption" className={classes.p}>
-                {t("confirmed")}:
+                {t('confirmed')}:
                 <span className={classes.confirmed}>
                   {content.confirmed === -1
-                    ? t("unknown")
+                    ? t('unknown')
                     : numberWithCommas(content.confirmed)}
                 </span>
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                {t("recovered")}:
+                {t('recovered')}:
                 <span className={classes.recovered}>
                   {content.recovered === -1
-                    ? t("unknown")
+                    ? t('unknown')
                     : numberWithCommas(content.recovered)}
                 </span>
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                {t("active")}:
+                {t('active')}:
                 <span className={classes.active}>
                   {content.confirmed === -1
-                    ? t("unknown")
+                    ? t('unknown')
                     : numberWithCommas(
                         content.confirmed - content.recovered - content.deaths
                       )}
@@ -103,25 +103,25 @@ function Map({ world, t }) {
               </Typography>
 
               <Typography variant="caption" className={classes.p}>
-                {t("deaths")}:
+                {t('deaths')}:
                 <span className={classes.deaths} variant="caption">
                   {content.deaths === -1
-                    ? t("unknown")
+                    ? t('unknown')
                     : numberWithCommas(content.deaths)}
                 </span>
               </Typography>
               <Typography variant="caption" className={classes.p}>
-                {t("tests")}:
+                {t('tests')}:
                 <span className={classes.tests} variant="caption">
                   {content.tests === -1
-                    ? t("unknown")
+                    ? t('unknown')
                     : numberWithCommas(content.tests)}
                 </span>
               </Typography>
             </Box>
           </Box>
         ) : (
-          ""
+          ''
         )}
       </ReactTooltip>
     </Layout>
@@ -133,7 +133,7 @@ Map.propTypes = {
 };
 
 export async function getStaticProps() {
-  const { data } = await axios.get("https://cov19.cc/report.json");
+  const { data } = await axios.get('https://cov19.cc/report.json');
 
   return {
     props: {
@@ -141,7 +141,8 @@ export async function getStaticProps() {
       world: data.regions.world,
       updated: data.last_updated,
     },
+    unstable_revalidate: 1, // In seconds
   };
 }
 
-export default withTranslation("common")(Map);
+export default withTranslation('common')(Map);
