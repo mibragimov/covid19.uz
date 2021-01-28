@@ -8,20 +8,10 @@ import theme from "../src/theme";
 import { appWithTranslation } from "../i18n";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
-import * as gtag from "../lib/gtag";
 
 function MyApp(props) {
   const { Component, pageProps } = props;
 
-  // React.useEffect(() => {
-  //   const handleRouteChange = (url) => {
-  //     gtag.pageview(url);
-  //   };
-  //   Router.events.on("routeChangeComplete", handleRouteChange);
-  //   return () => {
-  //     Router.events.off("routeChangeComplete", handleRouteChange);
-  //   };
-  // }, []);
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.

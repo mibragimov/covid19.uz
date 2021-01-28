@@ -8,7 +8,6 @@ import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CardComponent from '../components/Card';
 import TableCollapse from '../components/TableCollapse';
-import Pagination from '../components/Pagination';
 import CustomButtonGroup from '../components/CustomButtonGroup';
 import {
   FaGlobeAfrica,
@@ -40,42 +39,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Home({ totals, regions, t }) {
   const [rows, setRows] = useState(regions.world.list);
-  const [watchList, setWatchList] = useState([]);
-  const [hideWatchlist, setHideWatchlist] = useState(true);
-
-  // const handleAddWatchListItem = (row) => {
-  //   setWatchList((prevState) => [...prevState, row]);
-  //   localStorage.setItem("list", JSON.stringify(watchList));
-  //   if (!watchList.length) {
-  //     setHideWatchlist(false);
-  //   }
-  // };
-
-  // const handleRemoveWatchListItem = (row) => {
-  //   const filteredArr = watchList.filter(
-  //     (item) => item.country !== row.country
-  //   );
-  //   if (!filteredArr.length) {
-  //     setHideWatchlist(true);
-  //   }
-  //   setWatchList(filteredArr);
-  //   localStorage.setItem("list", JSON.stringify(filteredArr));
-  // };
-
-  // React.useEffect(() => {
-  //   const list = localStorage.getItem("list");
-
-  //   if (list.length) {
-  //     setWatchList(JSON.parse(list));
-  //   }
-  // }, []);
-
+ 
   // Pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const pageStart = page * rowsPerPage;
-  const pageEnd = page * rowsPerPage + rowsPerPage;
 
   // Styles
   const classes = useStyles();
@@ -179,27 +146,12 @@ function Home({ totals, regions, t }) {
               setPage={setPage}
             />
           </Paper>
-          {/* <Paper className={classes.paper} elevation={3} hidden={hideWatchlist}>
-            <TableCollapse
-              data={watchList}
-              addWatchlistItem={handleAddWatchListItem}
-              removeWatchlistItem={handleRemoveWatchListItem}
-              hideWatchlist={hideWatchlist}
-              watchlist={watchList}
-              setWatchList={setWatchList}
-            />
-          </Paper> */}
+      
           <Paper className={classes.paper} elevation={3}>
             <TableCollapse
               data={rows.sort((a, b) => b.confirmed - a.confirmed)}
             />
-            {/* <Pagination
-              setPage={setPage}
-              setRowsPerPage={setRowsPerPage}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              count={rows.length}
-            /> */}
+           
           </Paper>
         </Grid>
       </Grid>
@@ -221,7 +173,7 @@ export async function getStaticProps() {
       regions: data.regions,
       updated: data.last_updated,
     },
-    unstable_revalidate: 1, // In seconds
+    revalidate: 10
   };
 }
 

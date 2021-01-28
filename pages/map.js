@@ -141,7 +141,7 @@ export async function getStaticProps() {
       world: data.regions.world,
       updated: data.last_updated,
     },
-    unstable_revalidate: 1, // In seconds
+    revalidate: 10
   };
 }
 
